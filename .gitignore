@@ -1,0 +1,5 @@
+.vscode/*
+build
+scripts/simulation/venv
+scripts/simulation/src/__pychache__
+CMakeFiles
