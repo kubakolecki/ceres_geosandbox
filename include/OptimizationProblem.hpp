@@ -13,7 +13,7 @@ class OptimizationProblem
 {
     public:
         OptimizationProblem(GeoDataset& dataset);
-        void solve();
+        std::string solve();
 
 
     private:

@@ -14,7 +14,7 @@ ceres_geosandbox::OptimizationProblem::OptimizationProblem(ceres_geosandbox::Geo
 
 }
 
-void ceres_geosandbox::OptimizationProblem::solve()
+std::string ceres_geosandbox::OptimizationProblem::solve()
 {
     ceres::Solver::Summary ceresSummary;
     ceres::Solver::Options ceresSolverOptions;
@@ -30,6 +30,8 @@ void ceres_geosandbox::OptimizationProblem::solve()
     ceres::Solve(ceresSolverOptions, &m_problem, &ceresSummary);
 
     std::print("Ceres Solver report:\n{}\n", ceresSummary.FullReport());
+
+    return ceresSummary.FullReport();
 
 }
 

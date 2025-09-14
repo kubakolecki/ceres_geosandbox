@@ -4,6 +4,8 @@
 
 #include <print>
 #include <filesystem>
+#include <fstream>
+
 
 using namespace std::literals;
 
@@ -30,23 +32,33 @@ int main(int argc, char* argv[])
     const auto pathFileObsAngles{ pathDirectoryDataset / std::filesystem::path{"angles_observations.txt"s}};
     const auto pathFileObsGnss{ pathDirectoryDataset / std::filesystem::path{"gnss_observations.txt"s}};
 
+    const auto pathFileReport{ pathDirectoryDataset / std::filesystem::path{"report.txt"s}};
+    auto fileReport{std::ofstream{pathFileReport}};
+    std::print(fileReport,"Ceres Geosandbox optimization report\n\n");
+
     ceres_geosandbox::GeoDataset dataset;
     dataset.points = ceres_geosandbox::readPoints2dFromFile(pathFileCoordinates);
     std::print("Read {} points.\n", dataset.points.size());
+    std::print(fileReport, "Number of points: {}\n", dataset.points.size());
     dataset.angleMeasurements = ceres_geosandbox::readAngleMeasurementsFromFile(pathFileObsAngles);
     std::print("Read {} angle measurements.\n", dataset.angleMeasurements.size());
+    std::print(fileReport, "Number of angles: {}\n", dataset.angleMeasurements.size());
     dataset.distanceMeasurements = ceres_geosandbox::readDistanceMeasurementsFromFile(pathFileObsDistances);
     std::print("Read {} distance measurements.\n", dataset.distanceMeasurements.size());
+    std::print(fileReport, "Number of distances: {}\n", dataset.distanceMeasurements.size());
     dataset.gnssMeasurements = ceres_geosandbox::readGnssMeasurementsFromFile(pathFileObsGnss);
     std::print("Read {} GNSS measurements.\n", dataset.gnssMeasurements.size());
+    std::print(fileReport, "Number of points measured with GNSS: {}\n", dataset.gnssMeasurements.size());
 
     ceres_geosandbox::Evaluator evaluator;
-    evaluator.evaluate(dataset);
+    std::print(fileReport,"\nEvaluation of residuals before optimization:\n");
+    evaluator.evaluate(dataset, fileReport);
 
     ceres_geosandbox::OptimizationProblem problem{dataset};
-    problem.solve();
-
-    evaluator.evaluate(dataset);
+    const auto ceresReport{problem.solve()};
+    fileReport << ceresReport;
+    std::print(fileReport,"\nEvaluation of residuals after optimization:\n");
+    evaluator.evaluate(dataset, fileReport);
 
     
     

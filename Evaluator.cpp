@@ -6,15 +6,15 @@
 
 #include <print>
 
-void ceres_geosandbox::Evaluator::evaluate(ceres_geosandbox::GeoDataset& dataset) const
+void ceres_geosandbox::Evaluator::evaluate(ceres_geosandbox::GeoDataset& dataset, std::ostream& outputStream) const
 {
-    evaluateAngleMeasurements(dataset);
-    evaluateDistanceMeasurements(dataset);
-    evaluateGnssMeasurements(dataset);
+    evaluateAngleMeasurements(dataset, outputStream);
+    evaluateDistanceMeasurements(dataset, outputStream);
+    evaluateGnssMeasurements(dataset, outputStream);
 }
 
 
-void ceres_geosandbox::Evaluator::evaluateAngleMeasurements(GeoDataset& dataset) const
+void ceres_geosandbox::Evaluator::evaluateAngleMeasurements(GeoDataset& dataset, std::ostream& outputStream) const
 {
     const auto dontWantJacobian {nullptr};
     for (const auto& measurement : dataset.angleMeasurements)
@@ -44,13 +44,13 @@ void ceres_geosandbox::Evaluator::evaluateAngleMeasurements(GeoDataset& dataset)
 
         residual *= measurement.angleUncertaintyInRadians; //de-normalize
 
-        std::print("residual of angle: center point: {}, left point: {}, right point: {}, residual:  {}[rad] = {}[deg]\n", idCenter, idLeft, idRight, residual, residual*180.0/M_PI);
+        std::print(outputStream, "residual of angle: center point: {:5}, left point: {:5}, right point: {:5}, residual: {:14.10f}[rad] = {:12.8f}[deg] = {:7.1f}[cc]\n", idCenter, idLeft, idRight, residual, residual*180.0/M_PI, residual*200.0*1e04/M_PI);
 
 
     }
 }
 
-void ceres_geosandbox::Evaluator::evaluateDistanceMeasurements(GeoDataset& dataset) const
+void ceres_geosandbox::Evaluator::evaluateDistanceMeasurements(GeoDataset& dataset, std::ostream& outputStream) const
 {
 
     for (const auto& measurement : dataset.distanceMeasurements)
@@ -73,13 +73,13 @@ void ceres_geosandbox::Evaluator::evaluateDistanceMeasurements(GeoDataset& datas
         costFunction(dataset.points.at(idPointA).data(), dataset.points.at(idPointB).data(), &residual);
         residual *= measurement.distanceUncertainty; //de-normalize
 
-        std::print("residual of distance: point A: {}, point B: {}, residual:  {}\n", idPointA, idPointB, residual);
+        std::print(outputStream, "residual of distance: point A: {:5}, point B: {:5}, residual: {:9.5f}\n", idPointA, idPointB, residual);
     }
 
 
 }
 
-void ceres_geosandbox::Evaluator::evaluateGnssMeasurements(GeoDataset& dataset) const
+void ceres_geosandbox::Evaluator::evaluateGnssMeasurements(GeoDataset& dataset, std::ostream& outputStream) const
 {
     for (const auto& measurement : dataset.gnssMeasurements)
     {
@@ -94,7 +94,7 @@ void ceres_geosandbox::Evaluator::evaluateGnssMeasurements(GeoDataset& dataset) 
         residual[0] *= measurement.uncertainty;
         residual[1] *= measurement.uncertainty;
 
-        std::print("residual of GNSS measurement: point: {}, residual: [{},{}]\n", measurement.idPoint, residual[0], residual[1] );
+        std::print(outputStream, "residual of GNSS measurement: point: {:5}, residual: [{:9.5f},{:9.5f}]\n", measurement.idPoint, residual[0], residual[1] );
 
     }
 

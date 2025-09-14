@@ -1,0 +1,121 @@
+Ceres Geosandbox optimization report
+
+Number of points: 8
+Number of angles: 18
+Number of distances: 15
+Number of points measured with GNSS: 3
+
+Evaluation of residuals before optimization:
+residual of angle: center point: 10   , left point: 11   , right point: 1    , residual:   0.0013978245[rad] =   0.08008945[deg] =   889.9[cc]
+residual of angle: center point: 10   , left point: 2    , right point: 11   , residual:   0.0015409391[rad] =   0.08828931[deg] =   981.0[cc]
+residual of angle: center point: 11   , left point: 12   , right point: 1    , residual:   0.0015028320[rad] =   0.08610593[deg] =   956.7[cc]
+residual of angle: center point: 11   , left point: 1    , right point: 10   , residual:  -0.0005800834[rad] =  -0.03323633[deg] =  -369.3[cc]
+residual of angle: center point: 11   , left point: 10   , right point: 2    , residual:   0.0015777771[rad] =   0.09039997[deg] =  1004.4[cc]
+residual of angle: center point: 13   , left point: 14   , right point: 12   , residual:   0.0051636967[rad] =   0.29585803[deg] =  3287.3[cc]
+residual of angle: center point: 13   , left point: 14   , right point: 2    , residual:   0.0003290468[rad] =   0.01885299[deg] =   209.5[cc]
+residual of angle: center point: 14   , left point: 3    , right point: 12   , residual:   0.0045573150[rad] =   0.26111491[deg] =  2901.3[cc]
+residual of angle: center point: 14   , left point: 12   , right point: 13   , residual:  -0.0004293008[rad] =  -0.02459712[deg] =  -273.3[cc]
+residual of angle: center point: 12   , left point: 1    , right point: 11   , residual:   0.0014529786[rad] =   0.08324954[deg] =   925.0[cc]
+residual of angle: center point: 12   , left point: 11   , right point: 13   , residual:   0.0056446135[rad] =   0.32341253[deg] =  3593.5[cc]
+residual of angle: center point: 12   , left point: 11   , right point: 2    , residual:   0.0007584050[rad] =   0.04345341[deg] =   482.8[cc]
+residual of angle: center point: 2    , left point: 13   , right point: 11   , residual:   0.0017302596[rad] =   0.09913657[deg] =  1101.5[cc]
+residual of angle: center point: 2    , left point: 11   , right point: 1    , residual:   0.0017979617[rad] =   0.10301561[deg] =  1144.6[cc]
+residual of angle: center point: 2    , left point: 1    , right point: 10   , residual:  -0.0048354281[rad] =  -0.27704962[deg] = -3078.3[cc]
+residual of angle: center point: 1    , left point: 10   , right point: 2    , residual:   0.0019247280[rad] =   0.11027879[deg] =  1225.3[cc]
+residual of angle: center point: 1    , left point: 2    , right point: 11   , residual:  -0.0027422979[rad] =  -0.15712209[deg] = -1745.8[cc]
+residual of angle: center point: 1    , left point: 11   , right point: 12   , residual:  -0.0030102472[rad] =  -0.17247446[deg] = -1916.4[cc]
+residual of distance: point A: 1    , point B: 10   , residual:   0.09498
+residual of distance: point A: 10   , point B: 2    , residual:   0.51770
+residual of distance: point A: 10   , point B: 11   , residual:   0.76517
+residual of distance: point A: 1    , point B: 12   , residual:   0.07445
+residual of distance: point A: 11   , point B: 12   , residual:  -0.83366
+residual of distance: point A: 2    , point B: 13   , residual:   0.30447
+residual of distance: point A: 12   , point B: 14   , residual:   0.43647
+residual of distance: point A: 13   , point B: 14   , residual:  -0.10765
+residual of distance: point A: 3    , point B: 14   , residual:   0.18544
+residual of distance: point A: 14   , point B: 10   , residual:   0.50276
+residual of distance: point A: 13   , point B: 11   , residual:   0.02988
+residual of distance: point A: 13   , point B: 10   , residual:   0.63755
+residual of distance: point A: 13   , point B: 3    , residual:  -0.02811
+residual of distance: point A: 12   , point B: 3    , residual:   0.71512
+residual of distance: point A: 1    , point B: 2    , residual:   0.48999
+residual of GNSS measurement: point: 1    , residual: [ -0.39625,  0.47570]
+residual of GNSS measurement: point: 2    , residual: [  0.14975,  0.07624]
+residual of GNSS measurement: point: 3    , residual: [  0.02433, -0.30013]
+
+Solver Summary (v 2.2.0-eigen-(3.4.0)-lapack-suitesparse-(7.6.1)-eigensparse)
+
+                                     Original                  Reduced
+Parameter blocks                            8                        8
+Parameters                                 16                       16
+Residual blocks                            36                       36
+Residuals                                  39                       39
+
+Minimizer                        TRUST_REGION
+Trust region strategy     LEVENBERG_MARQUARDT
+Sparse linear algebra library    SUITE_SPARSE 
+
+                                        Given                     Used
+Linear solver          SPARSE_NORMAL_CHOLESKY   SPARSE_NORMAL_CHOLESKY
+Threads                                     1                        1
+Linear solver ordering              AUTOMATIC                        8
+
+Cost:
+Initial                          3.712484e+04
+Final                            3.578194e+03
+Change                           3.354665e+04
+
+Minimizer iterations                       16
+Successful steps                            5
+Unsuccessful steps                         11
+
+Time (in seconds):
+Preprocessor                         0.000157
+
+  Residual only evaluation           0.000069 (16)
+  Jacobian & residual evaluation     0.000771 (5)
+  Linear solver                      0.000247 (16)
+Minimizer                            0.001289
+
+Postprocessor                        0.000003
+Total                                0.001449
+
+Termination:                      CONVERGENCE (Parameter tolerance reached. Relative step_norm: 1.831206e-09 <= 1.000000e-08.)
+
+Evaluation of residuals after optimization:
+residual of angle: center point: 10   , left point: 11   , right point: 1    , residual:   0.0017135903[rad] =   0.09818149[deg] =  1090.9[cc]
+residual of angle: center point: 10   , left point: 2    , right point: 11   , residual:  -0.0009308704[rad] =  -0.05333494[deg] =  -592.6[cc]
+residual of angle: center point: 11   , left point: 12   , right point: 1    , residual:  -0.0010359417[rad] =  -0.05935509[deg] =  -659.5[cc]
+residual of angle: center point: 11   , left point: 1    , right point: 10   , residual:   0.0003157774[rad] =   0.01809271[deg] =   201.0[cc]
+residual of angle: center point: 11   , left point: 10   , right point: 2    , residual:  -0.0001911154[rad] =  -0.01095011[deg] =  -121.7[cc]
+residual of angle: center point: 13   , left point: 14   , right point: 12   , residual:   0.0000931370[rad] =   0.00533636[deg] =    59.3[cc]
+residual of angle: center point: 13   , left point: 14   , right point: 2    , residual:  -0.0006963639[rad] =  -0.03989871[deg] =  -443.3[cc]
+residual of angle: center point: 14   , left point: 3    , right point: 12   , residual:  -0.0019974588[rad] =  -0.11444596[deg] = -1271.6[cc]
+residual of angle: center point: 14   , left point: 12   , right point: 13   , residual:  -0.0002436954[rad] =  -0.01396272[deg] =  -155.1[cc]
+residual of angle: center point: 12   , left point: 1    , right point: 11   , residual:   0.0007292847[rad] =   0.04178494[deg] =   464.3[cc]
+residual of angle: center point: 12   , left point: 11   , right point: 13   , residual:   0.0003014575[rad] =   0.01727224[deg] =   191.9[cc]
+residual of angle: center point: 12   , left point: 11   , right point: 2    , residual:  -0.0005650982[rad] =  -0.03237774[deg] =  -359.8[cc]
+residual of angle: center point: 2    , left point: 13   , right point: 11   , residual:  -0.0003835386[rad] =  -0.02197515[deg] =  -244.2[cc]
+residual of angle: center point: 2    , left point: 11   , right point: 1    , residual:   0.0015265576[rad] =   0.08746531[deg] =   971.8[cc]
+residual of angle: center point: 2    , left point: 1    , right point: 10   , residual:  -0.0003233221[rad] =  -0.01852499[deg] =  -205.8[cc]
+residual of angle: center point: 1    , left point: 10   , right point: 2    , residual:  -0.0004313343[rad] =  -0.02471363[deg] =  -274.6[cc]
+residual of angle: center point: 1    , left point: 2    , right point: 11   , residual:  -0.0015978622[rad] =  -0.09155076[deg] = -1017.2[cc]
+residual of angle: center point: 1    , left point: 11   , right point: 12   , residual:   0.0002522204[rad] =   0.01445117[deg] =   160.6[cc]
+residual of distance: point A: 1    , point B: 10   , residual:   0.00241
+residual of distance: point A: 10   , point B: 2    , residual:   0.00260
+residual of distance: point A: 10   , point B: 11   , residual:  -0.00071
+residual of distance: point A: 1    , point B: 12   , residual:   0.00685
+residual of distance: point A: 11   , point B: 12   , residual:  -0.00083
+residual of distance: point A: 2    , point B: 13   , residual:   0.00368
+residual of distance: point A: 12   , point B: 14   , residual:   0.00729
+residual of distance: point A: 13   , point B: 14   , residual:   0.01649
+residual of distance: point A: 3    , point B: 14   , residual:   0.02240
+residual of distance: point A: 14   , point B: 10   , residual:  -0.00105
+residual of distance: point A: 13   , point B: 11   , residual:  -0.00083
+residual of distance: point A: 13   , point B: 10   , residual:  -0.00200
+residual of distance: point A: 13   , point B: 3    , residual:  -0.01521
+residual of distance: point A: 12   , point B: 3    , residual:  -0.00097
+residual of distance: point A: 1    , point B: 2    , residual:  -0.01734
+residual of GNSS measurement: point: 1    , residual: [ -0.00914, -0.00319]
+residual of GNSS measurement: point: 2    , residual: [  0.00893, -0.00036]
+residual of GNSS measurement: point: 3    , residual: [  0.00011,  0.00375]
