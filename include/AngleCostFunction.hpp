@@ -29,13 +29,14 @@ class AngleCostFunction: public ceres::SizedCostFunction<1,2,2,2>
             const double distSquaredR {der*der + dnr*dnr};
             
 
-            auto angle = atan2(dnl,del) - atan2(dnr,der);
-            if (angle < 0)
-            {
-                angle += 2.0*M_PI;
-            }    
+            //auto angle = atan2(dnl,del) - atan2(dnr,der);
+            auto angle = atan2(der,dnr) - atan2(del,dnl);
+            //if (angle < 0)
+            //{
+            //    angle += 2.0*M_PI;
+            //}    
 
-            residuals[0] = angle - m_angleInRadians;
+            residuals[0] =  m_angleInRadians - angle;
             
             residuals[0]/= m_angleUncertaintyInRadians;
 

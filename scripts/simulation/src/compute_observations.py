@@ -45,6 +45,7 @@ with open(path_file_output_distances,'w') as f_dist:
         point_to = coordinates_dict[id_to]
         distance = np.sqrt((point_from.e - point_to.e)**2 + (point_from.n - point_to.n)**2)
         noise = np.random.normal(0,noise_disnce)
+        #noise = 0
         distance_noisy = distance + noise
         f_dist.write(f'{id_from},{id_to},{distance_noisy},{noise_disnce}\n')
 
@@ -57,16 +58,16 @@ with open(path_file_output_angles,'w') as f_ang:
         point_center = coordinates_dict[id_center]
         point_left = coordinates_dict[id_left]
         point_right = coordinates_dict[id_right]
-        dx_left = point_left.e - point_center.e
-        dy_left = point_left.n - point_center.n
-        dx_right = point_right.e - point_center.e
-        dy_right = point_right.n - point_center.n
-        dir_left = np.arctan2(dy_left,dx_left)
-        dir_right = np.arctan2(dy_right,dx_right)
-        angle = dir_left - dir_right
-        if angle < 0:
-            angle += 2.0*np.pi
+        de_left = point_left.e - point_center.e
+        dn_left = point_left.n - point_center.n
+        de_right = point_right.e - point_center.e
+        dn_right = point_right.n - point_center.n
+        #angle = np.arctan(de_right/dn_right) - np.arctan(de_left/dn_left)
+        angle = np.arctan2(de_right,dn_right) - np.arctan2(de_left,dn_left)
+        #if angle < 0:
+        #    angle += 2.0*np.pi
         noise = np.random.normal(0,noise_angle)
+        #noise = 0
         angle_noisy = angle + noise
         f_ang.write(f'{id_center},{id_left},{id_right},{angle_noisy},{noise_angle}\n')
 
@@ -77,6 +78,8 @@ with open(path_file_output_gps,'w') as f_gps:
         point = coordinates_dict[id]
         noise_e = np.random.normal(0,noise_gps)
         noise_n = np.random.normal(0,noise_gps)
+        #noise_e = 0
+        #noise_n = 0
         e_noisy = point.e + noise_e
         n_noisy = point.n + noise_n
         f_gps.write(f'{id},{e_noisy},{n_noisy},{noise_gps}\n')
@@ -86,6 +89,6 @@ with open(path_file_output_coordinates_final,'w') as f_coor:
     for i in range(num_of_points):
         id = coordinates_table[i,0]
         point = coordinates_dict[id]
-        point.e = np.round(point.e,0) #rounding to full meteres to see how the optimizer handles it
-        point.n = np.round(point.n,0)
+        point.e = np.round(point.e,0) + np.random.normal(0,0.1) # add small noise to avoid same coordinat
+        point.n = np.round(point.n,0) + np.random.normal(0,0.1)
         f_coor.write(f'{id},{point.e},{point.n}\n') 

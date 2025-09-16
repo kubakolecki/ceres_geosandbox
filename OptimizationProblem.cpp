@@ -1,6 +1,7 @@
 #include "OptimizationProblem.hpp"
 
 #include "AngleCostFunction.hpp"
+#include "AngleCostFunctionAutodiff.hpp"
 #include "DistanceCostFunction.hpp"
 #include "GnssCostFunction.hpp"
 
@@ -57,7 +58,11 @@ void ceres_geosandbox::OptimizationProblem::addAngleMeasurements(ceres_geosandbo
         }
 
 
-        ceres::CostFunction* costFunction = new AngleCostFunction(measurement.angleInRadians, measurement.angleUncertaintyInRadians);
+        //ceres::CostFunction* costFunction = new AngleCostFunction(measurement.angleInRadians, measurement.angleUncertaintyInRadians);
+        ceres::CostFunction* costFunction = new ceres::AutoDiffCostFunction<AngleCostFunctionAutodiff,1,2,2,2>(
+            new AngleCostFunctionAutodiff(measurement.angleInRadians, measurement.angleUncertaintyInRadians)
+        );
+        
         ceres::LossFunction* lossFunction = nullptr; // No loss function
         //ceres::LossFunction* lossFunction = new ceres::HuberLoss(2.0);
         

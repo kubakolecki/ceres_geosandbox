@@ -2,6 +2,7 @@
 
 #include <fstream>
 #include <vector>
+#include <print>
 
 ceres_geosandbox::Points2d ceres_geosandbox::readPoints2dFromFile(const std::filesystem::path& filePath)
 {
@@ -57,6 +58,12 @@ ceres_geosandbox::AngleMeasurements ceres_geosandbox::readAngleMeasurementsFromF
             std::stod(tokens.at(3)),
             std::stod(tokens.at(4)));
     }
+    //for (const auto m: measurements )
+    //{
+    //    std::print("{}\n", m.angleUncertaintyInRadians);
+    //}
+
+
     return measurements;
 }
 
