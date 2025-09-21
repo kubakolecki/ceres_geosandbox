@@ -7,7 +7,7 @@ path_file_coordinates = os.path.join(path_directory_data,'coordinates_initial.tx
 path_file_graph_distances = os.path.join(path_directory_data,'distances_graph.txt')
 path_file_graph_angles = os.path.join(path_directory_data,'angles_graph.txt')
 path_file_graph_gps = os.path.join(path_directory_data,'gnss_graph.txt')
-noise_disnce = 0.02
+noise_distance = 0.02
 noise_angle = 0.0030*np.pi/200.0
 noise_gps = 0.015
 
@@ -44,10 +44,10 @@ with open(path_file_output_distances,'w') as f_dist:
         point_from = coordinates_dict[id_from]
         point_to = coordinates_dict[id_to]
         distance = np.sqrt((point_from.e - point_to.e)**2 + (point_from.n - point_to.n)**2)
-        noise = np.random.normal(0,noise_disnce)
+        noise = np.random.normal(0,noise_distance)
         #noise = 0
         distance_noisy = distance + noise
-        f_dist.write(f'{id_from},{id_to},{distance_noisy},{noise_disnce}\n')
+        f_dist.write(f'{id_from},{id_to},{distance_noisy},{noise_distance}\n')
 
 with open(path_file_output_angles,'w') as f_ang:
     f_ang.write('id_center,id_left, id_right, angle,noise\n')
@@ -89,6 +89,6 @@ with open(path_file_output_coordinates_final,'w') as f_coor:
     for i in range(num_of_points):
         id = coordinates_table[i,0]
         point = coordinates_dict[id]
-        point.e = np.round(point.e,0) + np.random.normal(0,0.1) # add small noise to avoid same coordinat
-        point.n = np.round(point.n,0) + np.random.normal(0,0.1)
+        point.e = np.round(point.e,0) + np.random.normal(0,0.2) # add small noise to get bin away from linearization point
+        point.n = np.round(point.n,0) + np.random.normal(0,0.2)
         f_coor.write(f'{id},{point.e},{point.n}\n') 

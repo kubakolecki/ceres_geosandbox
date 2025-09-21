@@ -1,7 +1,7 @@
 #include "Evaluator.hpp"
 
 #include "AngleCostFunction.hpp"
-#include "DistanceCostFunction.hpp"
+#include "DistanceCostFunctionAutodiff.hpp"
 #include "GnssCostFunction.hpp"
 
 #include <print>
@@ -69,7 +69,7 @@ void ceres_geosandbox::Evaluator::evaluateDistanceMeasurements(GeoDataset& datas
 
         double residual;
 
-        const auto costFunction {DistanceCostFunction{measurement.distance, measurement.distanceUncertainty}};
+        const auto costFunction {DistanceCostFunctionAutodiff{measurement.distance, measurement.distanceUncertainty}};
         costFunction(dataset.points.at(idPointA).data(), dataset.points.at(idPointB).data(), &residual);
         residual *= measurement.distanceUncertainty; //de-normalize
 

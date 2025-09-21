@@ -3,6 +3,7 @@
 #include "AngleCostFunction.hpp"
 #include "AngleCostFunctionAutodiff.hpp"
 #include "DistanceCostFunction.hpp"
+#include "DistanceCostFunctionAutodiff.hpp"
 #include "GnssCostFunction.hpp"
 
 #include <print>
@@ -58,10 +59,9 @@ void ceres_geosandbox::OptimizationProblem::addAngleMeasurements(ceres_geosandbo
         }
 
 
-        //ceres::CostFunction* costFunction = new AngleCostFunction(measurement.angleInRadians, measurement.angleUncertaintyInRadians);
-        ceres::CostFunction* costFunction = new ceres::AutoDiffCostFunction<AngleCostFunctionAutodiff,1,2,2,2>(
-            new AngleCostFunctionAutodiff(measurement.angleInRadians, measurement.angleUncertaintyInRadians)
-        );
+        ceres::CostFunction* costFunction = new AngleCostFunction(measurement.angleInRadians, measurement.angleUncertaintyInRadians);
+        //ceres::CostFunction* costFunction = new ceres::AutoDiffCostFunction<AngleCostFunctionAutodiff,1,2,2,2>(
+        //    new AngleCostFunctionAutodiff(measurement.angleInRadians, measurement.angleUncertaintyInRadians));
         
         ceres::LossFunction* lossFunction = nullptr; // No loss function
         //ceres::LossFunction* lossFunction = new ceres::HuberLoss(2.0);
@@ -92,8 +92,10 @@ void ceres_geosandbox::OptimizationProblem::addDistanceMeasurements(ceres_geosan
             throw std::runtime_error("Point with ID " + idPointB + " not found in dataset.");
         }
         
-        ceres::CostFunction* costFunction = new ceres::AutoDiffCostFunction<DistanceCostFunction,1,2,2>(
-            new DistanceCostFunction(measurement.distance, measurement.distanceUncertainty));
+        ceres::CostFunction* costFunction = new DistanceCostFunction(measurement.distance, measurement.distanceUncertainty);
+        
+        //ceres::CostFunction* costFunction = new ceres::AutoDiffCostFunction<DistanceCostFunctionAutodiff,1,2,2>(
+        //    new DistanceCostFunctionAutodiff(measurement.distance, measurement.distanceUncertainty));
 
         ceres::LossFunction* lossFunction = nullptr; // No loss function
         //ceres::LossFunction* lossFunction = new ceres::HuberLoss(2.0);
@@ -128,4 +130,11 @@ void ceres_geosandbox::OptimizationProblem::addGnssMeasurements(ceres_geosandbox
         dataset.points.at(idPoint).data()
         );
     }
+}
+
+
+ceres_geosandbox::CovarianceData ceres_geosandbox::OptimizationProblem::computeCovariance(ceres_geosandbox::Points2d& points) const
+{
+
+
 }

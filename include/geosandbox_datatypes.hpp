@@ -8,31 +8,33 @@
 
 namespace ceres_geosandbox
 {
-    using Point2dEastingNorthing = Eigen::Vector2d; 
+    using Point2dEastingNorthing = Eigen::Vector2d;
+    using Id = std::string;
+    using Covariance = Eigen::Matrix<double, 2, 2, Eigen::RowMajor>;
 
     struct AngleMeasurement
     {
-        std::string idCenter;
-        std::string idLeft;
-        std::string idRight;        
-        double angleInRadians; // Angle in radians
-        double angleUncertaintyInRadians; // Uncertainty in radians
+        Id idCenter;
+        Id idLeft;
+        Id idRight;        
+        double angleInRadians{}; // Angle in radians
+        double angleUncertaintyInRadians{}; // Uncertainty in radians
 
     };
 
     struct DistanceMeasurement
     {
-        std::string idPointA;
-        std::string idPointB;        
-        double distance;
-        double distanceUncertainty;
+        Id idPointA;
+        Id idPointB;        
+        double distance{};
+        double distanceUncertainty{};
     };
 
     struct GnssMeasurement
     {
         std::string idPoint;
         Point2dEastingNorthing coordinates;
-        double uncertainty;      
+        double uncertainty{};      
     };
 
     using Points2d= std::unordered_map<std::string, Point2dEastingNorthing>;
@@ -47,6 +49,8 @@ namespace ceres_geosandbox
         DistanceMeasurements distanceMeasurements;
         GnssMeasurements gnssMeasurements;
     };
+
+    using CovarianceData = std::unordered_map<Id, Covariance>;
 
 
 }

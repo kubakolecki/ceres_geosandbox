@@ -14,6 +14,8 @@ class OptimizationProblem
     public:
         OptimizationProblem(GeoDataset& dataset);
         std::string solve();
+        CovarianceData computeCovariance(Points2d& points) const;
+
 
 
     private:

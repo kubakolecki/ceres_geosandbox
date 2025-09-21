@@ -28,31 +28,25 @@ class AngleCostFunction: public ceres::SizedCostFunction<1,2,2,2>
             const double distSquaredL {del*del + dnl*dnl};
             const double distSquaredR {der*der + dnr*dnr};
             
+            const auto angle = atan2(der,dnr) - atan2(del,dnl);
 
-            //auto angle = atan2(dnl,del) - atan2(dnr,der);
-            auto angle = atan2(der,dnr) - atan2(del,dnl);
-            //if (angle < 0)
-            //{
-            //    angle += 2.0*M_PI;
-            //}    
 
-            residuals[0] =  m_angleInRadians - angle;
-            
+            residuals[0] =  angle - m_angleInRadians;           
             residuals[0]/= m_angleUncertaintyInRadians;
 
             if (jacobian != nullptr  && jacobian[0] != nullptr)
 		    {
                 //central point
-                jacobian[0][0] = der/distSquaredR - del/distSquaredL; 
-                jacobian[0][1] = dnl/distSquaredL - dnr/distSquaredR;
-
+                jacobian[0][0] = (dnl/distSquaredL - dnr/distSquaredR)/m_angleUncertaintyInRadians;
+                jacobian[0][1] = (der/distSquaredR - del/distSquaredL)/m_angleUncertaintyInRadians; 
+                
                 //left point
-                jacobian[1][0] = del/distSquaredL;
-                jacobian[1][1] = -dnl/distSquaredL;
- 
+                jacobian[1][0] = (-dnl/distSquaredL)/m_angleUncertaintyInRadians;
+                jacobian[1][1] = (del/distSquaredL)/m_angleUncertaintyInRadians;
+                
                 //right point
-                jacobian[2][0] = -der/distSquaredR;
-                jacobian[2][1] = dnr/distSquaredR;
+                jacobian[2][0] = (dnr/distSquaredR)/m_angleUncertaintyInRadians;
+                jacobian[2][1] = (-der/distSquaredR)/m_angleUncertaintyInRadians;           
             }
       
             return true;

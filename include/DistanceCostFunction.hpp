@@ -1,20 +1,36 @@
 #pragma once
 
+#include <ceres/ceres.h>
+
 namespace ceres_geosandbox
 {
 
-class DistanceCostFunction
+class DistanceCostFunction: public ceres::SizedCostFunction<1,2,2>
 {
     public:
-        explicit DistanceCostFunction(double distance, double distanceUncertainy): m_distance(distance), m_distanceUncertainty(distanceUncertainy)
-        { }
+        DistanceCostFunction(double distance, double distanceUncertainty): m_distance{distance}, m_distanceUncertainty{distanceUncertainty}
+        {}
 
-        template<typename T>
-	    bool operator() (const T* const coordinates1, const T* const coordinates2 , T* residual) const
-	    {
-            residual[0] =  sqrt((coordinates1[0] - coordinates2[0])*(coordinates1[0] - coordinates2[0]) + (coordinates1[1] - coordinates2[1])*(coordinates1[1] - coordinates2[1])) - static_cast<T>(m_distance);
-            residual[0] /= static_cast<T>(m_distanceUncertainty);         
+        bool Evaluate (double const* const* coordiantes, double* residuals, double** jacobian) const override
+        {
+            const double deltaEast {coordiantes[1][0] - coordiantes[0][0]};
+            const double deltaNorth {coordiantes[1][1] - coordiantes[0][1]};
+            const double predictedDistance {sqrt(deltaEast*deltaEast + deltaNorth*deltaNorth)};
+            residuals[0] = predictedDistance - m_distance;
+            residuals[0] /= m_distanceUncertainty;
+            
+            if (jacobian != nullptr  && jacobian[0] != nullptr)
+		    {
+                jacobian[0][0] = (-deltaEast/predictedDistance)/m_distanceUncertainty;
+                jacobian[0][1] = (-deltaNorth/predictedDistance)/m_distanceUncertainty;
+
+                jacobian[1][0] = (deltaEast/predictedDistance)/m_distanceUncertainty;
+                jacobian[1][1] = (deltaNorth/predictedDistance)/m_distanceUncertainty;
+
+            }
+
             return true;
+
         }
 
     private:
