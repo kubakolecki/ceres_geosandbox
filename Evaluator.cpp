@@ -1,8 +1,8 @@
 #include "Evaluator.hpp"
 
-#include "AngleCostFunction.hpp"
+#include "AngleCostFunctionAutodiff.hpp"
 #include "DistanceCostFunctionAutodiff.hpp"
-#include "GnssCostFunction.hpp"
+#include "GnssCostFunctionAutodiff.hpp"
 
 #include <print>
 
@@ -38,9 +38,12 @@ void ceres_geosandbox::Evaluator::evaluateAngleMeasurements(GeoDataset& dataset,
 
         double residual;
 
-        ceres::CostFunction* costFunction = new AngleCostFunction(measurement.angleInRadians, measurement.angleUncertaintyInRadians);
-        double* coordinates[3] = {dataset.points.at(idCenter).data(), dataset.points.at(idLeft).data(), dataset.points.at(idRight).data()};
-        costFunction->Evaluate(coordinates, &residual, dontWantJacobian );
+        const auto costFunction{AngleCostFunctionAutodiff{measurement.angleInRadians, measurement.angleUncertaintyInRadians}};
+        costFunction(dataset.points.at(idCenter).data(), dataset.points.at(idLeft).data(), dataset.points.at(idRight).data(), &residual);
+
+        //ceres::CostFunction* costFunction = new AngleCostFunction(measurement.angleInRadians, measurement.angleUncertaintyInRadians);
+        //double* coordinates[3] = {dataset.points.at(idCenter).data(), dataset.points.at(idLeft).data(), dataset.points.at(idRight).data()};
+        //costFunction->Evaluate(coordinates, &residual, dontWantJacobian );
 
         residual *= measurement.angleUncertaintyInRadians; //de-normalize
 
@@ -89,7 +92,7 @@ void ceres_geosandbox::Evaluator::evaluateGnssMeasurements(GeoDataset& dataset, 
         }
 
         double residual[2];
-        const auto costFunction{GnssCostFunction{measurement.coordinates, measurement.uncertainty}};
+        const auto costFunction{GnssCostFunctionAutodiff{measurement.coordinates, measurement.uncertainty}};
         costFunction(dataset.points.at(measurement.idPoint).data(), residual);
         residual[0] *= measurement.uncertainty;
         residual[1] *= measurement.uncertainty;

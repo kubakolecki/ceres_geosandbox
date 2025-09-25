@@ -1,10 +1,11 @@
 #include "OptimizationProblem.hpp"
 
 #include "AngleCostFunction.hpp"
-#include "AngleCostFunctionAutodiff.hpp"
 #include "DistanceCostFunction.hpp"
-#include "DistanceCostFunctionAutodiff.hpp"
 #include "GnssCostFunction.hpp"
+#include "AngleCostFunctionAutodiff.hpp"
+#include "DistanceCostFunctionAutodiff.hpp"
+#include "GnssCostFunctionAutodiff.hpp"
 
 #include <print>
 
@@ -119,8 +120,8 @@ void ceres_geosandbox::OptimizationProblem::addGnssMeasurements(ceres_geosandbox
             throw std::runtime_error("Point with ID " + idPoint + " not found in dataset.");
         }
         
-        ceres::CostFunction* costFunction = new ceres::AutoDiffCostFunction<GnssCostFunction,2,2>(
-            new GnssCostFunction(measurement.coordinates, measurement.uncertainty));
+        ceres::CostFunction* costFunction = new ceres::AutoDiffCostFunction<GnssCostFunctionAutodiff,2,2>(
+            new GnssCostFunctionAutodiff(measurement.coordinates, measurement.uncertainty));
 
         ceres::LossFunction* lossFunction = nullptr; // No loss function
         //ceres::LossFunction* lossFunction = new ceres::HuberLoss(2.0);

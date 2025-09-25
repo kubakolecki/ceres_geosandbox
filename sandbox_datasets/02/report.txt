@@ -70,15 +70,15 @@ Successful steps                            3
 Unsuccessful steps                          0
 
 Time (in seconds):
-Preprocessor                         0.000231
+Preprocessor                         0.001562
 
-  Residual only evaluation           0.000021 (3)
-  Jacobian & residual evaluation     0.000109 (3)
-  Linear solver                      0.000162 (3)
-Minimizer                            0.000422
+  Residual only evaluation           0.000023 (3)
+  Jacobian & residual evaluation     0.000248 (3)
+  Linear solver                      0.001036 (3)
+Minimizer                            0.001473
 
-Postprocessor                        0.000004
-Total                                0.000657
+Postprocessor                        0.000005
+Total                                0.003040
 
 Termination:                      CONVERGENCE (Parameter tolerance reached. Relative step_norm: 5.814224e-09 <= 1.000000e-08.)
 
