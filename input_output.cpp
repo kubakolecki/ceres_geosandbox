@@ -58,12 +58,6 @@ ceres_geosandbox::AngleMeasurements ceres_geosandbox::readAngleMeasurementsFromF
             std::stod(tokens.at(3)),
             std::stod(tokens.at(4)));
     }
-    //for (const auto m: measurements )
-    //{
-    //    std::print("{}\n", m.angleUncertaintyInRadians);
-    //}
-
-
     return measurements;
 }
 
@@ -124,4 +118,37 @@ ceres_geosandbox::GnssMeasurements ceres_geosandbox::readGnssMeasurementsFromFil
             std::stod(tokens.at(3)));
     }
     return measurements;
+}
+
+void ceres_geosandbox::printCovariances(std::ostream& outputStream, const ceres_geosandbox::CovarianceData& covarianceData )
+{
+    std::print(outputStream, "pointId,covariance matrix\n");
+    
+    for (const auto& [id, covarianceMatrix]: covarianceData )
+    {
+        std::print(outputStream,"{}",id);
+        const auto rows {covarianceMatrix.rows()};
+        const auto cols {covarianceMatrix.cols()};
+        for (auto row{0}; row<rows; ++row)
+        {
+            for(auto col{0}; col<cols; ++col)
+            {
+                std::print(outputStream, ",{:.10e}", covarianceMatrix(row,col));
+            }
+        }
+        std::print(outputStream, "\n");
+
+    }
+
+}
+
+void ceres_geosandbox::printPoints(std::ostream& outputStream, const ceres_geosandbox::Points2d& points)
+{
+    std::print(outputStream,"{:>7s},{:>15s},{:>15s}\n", "pointId", "easting", "northing");
+    
+    for (const auto& [id, point]: points )
+    {
+        std::print(outputStream,"{:7},{:15.7f},{:15.7f}\n",id, point.x(), point.y());
+    }
+
 }

@@ -3,14 +3,14 @@
 #include <Eigen/Dense> 
 
 #include <string>
-#include <unordered_map>
+#include <map>
 
 
 namespace ceres_geosandbox
 {
     using Point2dEastingNorthing = Eigen::Vector2d;
     using Id = std::string;
-    using Covariance = Eigen::Matrix<double, 2, 2, Eigen::RowMajor>;
+    using CovarianceMatrix = Eigen::Matrix<double, 2, 2, Eigen::RowMajor>;
 
     struct AngleMeasurement
     {
@@ -37,7 +37,7 @@ namespace ceres_geosandbox
         double uncertainty{};      
     };
 
-    using Points2d= std::unordered_map<std::string, Point2dEastingNorthing>;
+    using Points2d= std::map<std::string, Point2dEastingNorthing>;
     using AngleMeasurements = std::vector<AngleMeasurement>;
     using DistanceMeasurements = std::vector<DistanceMeasurement>;
     using GnssMeasurements = std::vector<GnssMeasurement>;
@@ -50,7 +50,7 @@ namespace ceres_geosandbox
         GnssMeasurements gnssMeasurements;
     };
 
-    using CovarianceData = std::unordered_map<Id, Covariance>;
+    using CovarianceData = std::map<Id, CovarianceMatrix>;
 
 
 }

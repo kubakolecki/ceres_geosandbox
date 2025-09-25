@@ -13,10 +13,8 @@ class OptimizationProblem
 {
     public:
         OptimizationProblem(GeoDataset& dataset);
-        std::string solve();
-        CovarianceData computeCovariance(Points2d& points) const;
-
-
+        ceres::Solver::Summary solve();
+        CovarianceData computeCovariance(const Points2d& points, const double sigmaZero);
 
     private:
         ceres::Problem m_problem;

@@ -7,7 +7,12 @@
 #include "DistanceCostFunctionAutodiff.hpp"
 #include "GnssCostFunctionAutodiff.hpp"
 
+#include <ceres/covariance.h>
+
 #include <print>
+#include <algorithm>
+#include <iterator>
+#include <ranges>
 
 ceres_geosandbox::OptimizationProblem::OptimizationProblem(ceres_geosandbox::GeoDataset& dataset)
 {
@@ -17,7 +22,7 @@ ceres_geosandbox::OptimizationProblem::OptimizationProblem(ceres_geosandbox::Geo
 
 }
 
-std::string ceres_geosandbox::OptimizationProblem::solve()
+ceres::Solver::Summary ceres_geosandbox::OptimizationProblem::solve()
 {
     ceres::Solver::Summary ceresSummary;
     ceres::Solver::Options ceresSolverOptions;
@@ -34,7 +39,7 @@ std::string ceres_geosandbox::OptimizationProblem::solve()
 
     std::print("Ceres Solver report:\n{}\n", ceresSummary.FullReport());
 
-    return ceresSummary.FullReport();
+    return ceresSummary;
 
 }
 
@@ -126,16 +131,32 @@ void ceres_geosandbox::OptimizationProblem::addGnssMeasurements(ceres_geosandbox
         ceres::LossFunction* lossFunction = nullptr; // No loss function
         //ceres::LossFunction* lossFunction = new ceres::HuberLoss(2.0);
 
-        m_problem.AddResidualBlock(
-        costFunction, lossFunction,
-        dataset.points.at(idPoint).data()
-        );
+        m_problem.AddResidualBlock(costFunction, lossFunction, dataset.points.at(idPoint).data());
     }
 }
 
 
-ceres_geosandbox::CovarianceData ceres_geosandbox::OptimizationProblem::computeCovariance(ceres_geosandbox::Points2d& points) const
+ceres_geosandbox::CovarianceData ceres_geosandbox::OptimizationProblem::computeCovariance(const ceres_geosandbox::Points2d& points, const double sigmaZero)
 {
+    CovarianceData covarianceData;
+    
+    using CovarianceBlockAddress = std::pair<const double*, const double*>;
+    using CovarianceBlockAddressBook = std::vector<CovarianceBlockAddress>;
 
+    CovarianceBlockAddressBook covarianceBlockAddresses;
+    std::ranges::transform(std::views::values(points), std::back_inserter(covarianceBlockAddresses), [](const auto& point){return std::make_pair(point.data(), point.data()); });
+    ceres::Covariance covarianceEstimator{ceres::Covariance::Options{}};
+    covarianceEstimator.Compute(covarianceBlockAddresses, &m_problem);
+
+    const double sigmaZeroSquared{sigmaZero*sigmaZero};
+    for (const auto& [id, point]: points)
+    {
+        CovarianceMatrix covarianceMatrix;
+        covarianceEstimator.GetCovarianceBlock(point.data(), point.data(), covarianceMatrix.data());
+        covarianceMatrix*=sigmaZeroSquared;
+        covarianceData.emplace(id, std::move(covarianceMatrix));       
+    }
+
+    return covarianceData;
 
 }

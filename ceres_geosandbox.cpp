@@ -55,10 +55,24 @@ int main(int argc, char* argv[])
     evaluator.evaluate(dataset, fileReport);
 
     ceres_geosandbox::OptimizationProblem problem{dataset};
-    const auto ceresReport{problem.solve()};
-    fileReport << ceresReport;
+    const auto solverSummary{problem.solve()};
+    fileReport << solverSummary.FullReport();
+
+    const auto sigmaZero {sqrt(2.0 * solverSummary.final_cost / (solverSummary.num_residuals - solverSummary.num_effective_parameters))};
+    std::print(fileReport, "Sigma0: {:10.7f}\n", sigmaZero);
+
+    std::print("\n\nSigma0 = {}\n", sigmaZero);
+
     std::print(fileReport,"\nEvaluation of residuals after optimization:\n");
+
     evaluator.evaluate(dataset, fileReport);
+
+    std::print(fileReport, "\nOptimized coordinates of points:\n");
+    ceres_geosandbox::printPoints(fileReport, dataset.points);
+
+    const auto covarianceData{problem.computeCovariance(dataset.points, sigmaZero)};
+    std::print(fileReport,"\nComputed covariances for {} points:\n", covarianceData.size());
+    ceres_geosandbox::printCovariances(fileReport, covarianceData);
 
     
     

@@ -70,17 +70,18 @@ Successful steps                            3
 Unsuccessful steps                          0
 
 Time (in seconds):
-Preprocessor                         0.001562
+Preprocessor                         0.000226
 
-  Residual only evaluation           0.000023 (3)
-  Jacobian & residual evaluation     0.000248 (3)
-  Linear solver                      0.001036 (3)
-Minimizer                            0.001473
+  Residual only evaluation           0.000024 (3)
+  Jacobian & residual evaluation     0.000123 (3)
+  Linear solver                      0.000190 (3)
+Minimizer                            0.000477
 
-Postprocessor                        0.000005
-Total                                0.003040
+Postprocessor                        0.000004
+Total                                0.000707
 
 Termination:                      CONVERGENCE (Parameter tolerance reached. Relative step_norm: 5.814224e-09 <= 1.000000e-08.)
+Sigma0:  0.9575634
 
 Evaluation of residuals after optimization:
 residual of angle: center point: 10   , left point: 11   , right point: 1    , residual:  -0.0000196316[rad] =  -0.00112481[deg] =   -12.5[cc]
@@ -119,3 +120,25 @@ residual of distance: point A: 1    , point B: 2    , residual:  -0.00714
 residual of GNSS measurement: point: 1    , residual: [ -0.00099, -0.00289]
 residual of GNSS measurement: point: 2    , residual: [  0.00136,  0.00257]
 residual of GNSS measurement: point: 3    , residual: [ -0.00038,  0.00033]
+
+Optimized coordinates of points:
+pointId,        easting,       northing
+1      ,    103.4120426,    780.4954897
+10     ,    161.2112768,    839.5827462
+11     ,    160.4745108,    603.3189960
+12     ,     94.0378473,    499.5970543
+13     ,    203.1395820,    494.2324431
+14     ,    117.3076485,    200.0831298
+2      ,    207.8649770,    785.9353051
+3      ,     98.9780209,     99.3153673
+
+Computed covariances for 8 points:
+pointId,covariance matrix
+1,1.1172220719e-04,5.0115525078e-06,5.0115525078e-06,8.7829470078e-05
+10,1.3253352652e-04,-3.3453700855e-06,-3.3453700855e-06,9.7718974831e-05
+11,1.1836279267e-04,1.0856186379e-05,1.0856186379e-05,1.3245490974e-04
+12,1.8767559618e-04,-1.6653871962e-06,-1.6653871962e-06,1.2141151516e-04
+13,1.1794845974e-04,7.8830445031e-06,7.8830445031e-06,1.2537592110e-04
+14,1.7371848915e-04,8.4780031641e-06,8.4780031641e-06,1.7218400635e-04
+2,1.1331120224e-04,-8.6402869800e-06,-8.6402869800e-06,9.0766187243e-05
+3,2.0352274341e-04,-6.7579942233e-06,-6.7579942233e-06,1.2211658130e-04
